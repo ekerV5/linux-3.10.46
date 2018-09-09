@@ -119,10 +119,11 @@ static struct samsung_keypad_platdata smdkv210_keypad_data __initdata = {
 	.cols		= 8,
 };
 
+/* modified by eker */
 static struct resource smdkv210_dm9000_resources[] = {
-	[0] = DEFINE_RES_MEM(S5PV210_PA_SROM_BANK5, 1),
-	[1] = DEFINE_RES_MEM(S5PV210_PA_SROM_BANK5 + 2, 1),
-	[2] = DEFINE_RES_NAMED(IRQ_EINT(9), 1, NULL, IORESOURCE_IRQ \
+	[0] = DEFINE_RES_MEM(S5PV210_PA_SROM_BANK1, 4),
+	[1] = DEFINE_RES_MEM(S5PV210_PA_SROM_BANK1 + 4, 4),
+	[2] = DEFINE_RES_NAMED(IRQ_EINT(7), 1, NULL, IORESOURCE_IRQ \
 				| IORESOURCE_IRQ_HIGHLEVEL),
 };
 
@@ -297,7 +298,7 @@ static void __init smdkv210_machine_init(void)
 {
 	s3c_pm_init();
 
-	smdkv210_dm9000_init();
+	//smdkv210_dm9000_init();	//modified by eker
 
 	samsung_keypad_set_platdata(&smdkv210_keypad_data);
 	s3c24xx_ts_set_platdata(NULL);
