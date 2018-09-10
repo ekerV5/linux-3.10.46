@@ -158,15 +158,15 @@ static void smdkv210_lte480wv_set_power(struct plat_lcd_data *pd,
 #endif
 
 		/* fire nRESET on power up */
-		gpio_request_one(S5PV210_GPH0(6), GPIOF_OUT_INIT_HIGH, "GPH0");
+		// gpio_request_one(S5PV210_GPH0(6), GPIOF_OUT_INIT_HIGH, "GPH0");
 
-		gpio_set_value(S5PV210_GPH0(6), 0);
-		mdelay(10);
+		// gpio_set_value(S5PV210_GPH0(6), 0);
+		// mdelay(10);
 
-		gpio_set_value(S5PV210_GPH0(6), 1);
-		mdelay(10);
+		// gpio_set_value(S5PV210_GPH0(6), 1);
+		// mdelay(10);
 
-		gpio_free(S5PV210_GPH0(6));
+		// gpio_free(S5PV210_GPH0(6));
 	} else {
 #if !defined(CONFIG_BACKLIGHT_PWM)
 		gpio_request_one(S5PV210_GPD0(3), GPIOF_OUT_INIT_LOW, "GPD0");
@@ -193,12 +193,12 @@ static struct s3c_fb_pd_win smdkv210_fb_win0 = {
 };
 
 static struct fb_videomode smdkv210_lcd_timing = {
-	.left_margin	= 13,
-	.right_margin	= 8,
-	.upper_margin	= 7,
-	.lower_margin	= 5,
-	.hsync_len	= 3,
-	.vsync_len	= 1,
+	.left_margin	= 25,
+	.right_margin	= 209,
+	.upper_margin	= 13,
+	.lower_margin	= 21,
+	.hsync_len	= 19,
+	.vsync_len	= 9,
 	.xres		= 800,
 	.yres		= 480,
 };
@@ -206,8 +206,11 @@ static struct fb_videomode smdkv210_lcd_timing = {
 static struct s3c_fb_platdata smdkv210_lcd0_pdata __initdata = {
 	.win[0]		= &smdkv210_fb_win0,
 	.vtiming	= &smdkv210_lcd_timing,
-	.vidcon0	= VIDCON0_VIDOUT_RGB | VIDCON0_PNRMODE_RGB,
-	.vidcon1	= VIDCON1_INV_HSYNC | VIDCON1_INV_VSYNC,
+
+	/* modified by eker*/
+	.vidcon0	= (5<<6) | (1<<4) | (1<<1) | (1<<0),
+	.vidcon1	= (1<<6) | (1<<5),
+
 	.setup_gpio	= s5pv210_fb_gpio_setup_24bpp,
 };
 
