@@ -54,6 +54,7 @@
 #include <linux/platform_data/mtd-nand-s3c2410.h>
 #include <linux/mtd/partitions.h>
 #include <linux/mtd/mtd.h>
+#include <linux/gpio_keys.h>
 
 #include "common.h"
 
@@ -301,6 +302,89 @@ static void s5pv210_nand_gpio_cfg(void)
 	iounmap(mp06);
 }
 
+/* gpio keys (add by eker) */
+static struct gpio_keys_button buttons[] = {
+	[0] = {
+		.code = KEY_BACK,
+		.gpio = S5PV210_GPH2(0),
+		.active_low = 1,
+		.desc = "back",
+		.type = EV_KEY,
+		.debounce_interval = 50,
+	},
+	[1] = {
+		.code = KEY_HOME,
+		.gpio = S5PV210_GPH2(1),
+		.active_low = 1,
+		.desc = "home",
+		.type = EV_KEY,
+		.debounce_interval = 50,
+	},
+	[2] = {
+		.code = KEY_MENU,
+		.gpio = S5PV210_GPH2(2),
+		.active_low = 1,
+		.desc = "menu",
+		.type = EV_KEY,
+		.debounce_interval = 50,
+	},
+	[3] = {
+		.code = KEY_ENTER,
+		.gpio = S5PV210_GPH2(3),
+		.active_low = 1,
+		.desc = "enter",
+		.type = EV_KEY,
+		.debounce_interval = 50,
+	},
+	[4] = {
+		.code = KEY_UP,
+		.gpio = S5PV210_GPH3(0),
+		.active_low = 1,
+		.desc = "up",
+		.type = EV_KEY,
+		.debounce_interval = 50,
+	},
+	[5] = {
+		.code = KEY_DOWN,
+		.gpio = S5PV210_GPH3(1),
+		.active_low = 1,
+		.desc = "down",
+		.type = EV_KEY,
+		.debounce_interval = 50,
+	},
+	[6] = {
+		.code = KEY_LEFT,
+		.gpio = S5PV210_GPH3(2),
+		.active_low = 1,
+		.desc = "left",
+		.type = EV_KEY,
+		.debounce_interval = 50,
+	},
+	[7] = {
+		.code = KEY_RIGHT,
+		.gpio = S5PV210_GPH3(3),
+		.active_low = 1,
+		.desc = "right",
+		.type = EV_KEY,
+		.debounce_interval = 50,
+	},
+};
+
+static struct gpio_keys_platform_data eker210_keys_pdata = {
+	.buttons = buttons,
+	.nbuttons = ARRAY_SIZE(buttons),
+	.rep = 1,
+};
+
+static struct platform_device eker210_keys = {
+	.name = "gpio-keys",
+	.dev = {
+		.platform_data =  &eker210_keys_pdata,
+	},
+	.id = -1,
+};
+
+
 static struct platform_device *smdkv210_devices[] __initdata = {
 	&s3c_device_adc,
 	&s3c_device_cfcon,
@@ -332,6 +416,7 @@ static struct platform_device *smdkv210_devices[] __initdata = {
 	&smdkv210_dm9000,
 	&smdkv210_lcd_lte480wv,
 	&s3c_device_nand,	//add by eker
+	&eker210_keys,		//add by eker
 };
 
 static void __init smdkv210_dm9000_init(void)
