@@ -1,0 +1,3 @@
+使用说明：
+cp eker210_config .config
+./eker210_make.sh
